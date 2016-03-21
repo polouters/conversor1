@@ -88,27 +88,29 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            // Esenciales ListView
             lista.View = View.Details;
             lista.GridLines = true;
             lista.FullRowSelect = true;
-
+            // Variables globales dentro de la funcion
             string line;
             string archivo = Files.Text;
             int contador=0;
-
-            // Read the file and display it line by line.
-
             System.IO.StreamReader file = new System.IO.StreamReader(archivo);
             int ncampos = 0;
+            // ArrayLists para llenar el ListView 
+            ArrayList nombreC = new ArrayList();
+            ArrayList longC = new ArrayList();
 
+         //   string[,] lista_arr = new string[ncampos, 2];
             while ((line = file.ReadLine()) != null)
             {
+                
                 if (contador == 0)
                 {
                     // Cabecera
                     string[] campos = line.ToString().Split('\t');
-                    string[,] lista_arr = new string[200, 2];
-
+                   
                     lista.Clear();
 
                     lista.Columns.Add("Nombre campo", 500);
@@ -116,23 +118,11 @@ namespace WindowsFormsApplication1
 
                     foreach (string campo in campos)
                     {
-                        lista_arr[ncampos, 0] = campo;
-                        lista_arr[ncampos, 1] = "";
+                        nombreC.Add(campo);
+                        longC.Add(0);
                         ncampos++;
                     }
-                    ListViewItem itm;
-
-           
-
-                    for (int i = 0; i < ncampos; i++)
-                    {
-                        string[] fila = new string[2];
-
-                        fila[0] = lista_arr[i, 0];
-                        fila[1] = lista_arr[i, 1];
-                        itm = new ListViewItem(fila);
-                        lista.Items.Add(itm);
-                    }
+                
                 }
                 else
                 {
@@ -144,16 +134,33 @@ namespace WindowsFormsApplication1
                         foreach (string campo in campos)
                         {
                             // AQUI VA TODA LA LOGICA DEL PROGRAMA
+                            int tamano = campo.Length;
+                            if (tamano > (int)longC[camposprocesados + 1])
+                            {
+                                longC[camposprocesados + 1] = tamano;
+                                   
+                            }
+                            //if(tamano>)
 
                             camposprocesados++;
                         }
                         line = file.ReadLine();
-                        campos = line.ToString().Split('\t');
+                      //  campos = line.ToString().Split('\t');
                     } while (camposprocesados < ncampos);
 
                 }
                 MessageBox.Show(line);
                 contador++;
+            }
+            ListViewItem itm;
+            for (int i = 0; i < ncampos; i++)
+            {
+                string[] fila = new string[2];
+
+                fila[0] = nombreC[i].ToString();
+                fila[1] = longC[i].ToString();
+                itm = new ListViewItem(fila);
+                lista.Items.Add(itm);
             }
             file.Close();
         }
