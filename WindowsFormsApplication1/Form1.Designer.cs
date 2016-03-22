@@ -32,13 +32,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.Analizar = new System.Windows.Forms.Button();
             this.lista = new System.Windows.Forms.ListView();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // Files
             // 
-            this.Files.Location = new System.Drawing.Point(12, 26);
+            this.Files.Location = new System.Drawing.Point(135, 46);
             this.Files.Name = "Files";
             this.Files.Size = new System.Drawing.Size(771, 20);
             this.Files.TabIndex = 0;
@@ -49,57 +48,49 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 109);
+            this.button1.BackColor = System.Drawing.Color.RosyBrown;
+            this.button1.Location = new System.Drawing.Point(83, 97);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(310, 116);
             this.button1.TabIndex = 1;
             this.button1.Text = "PROCESAR";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Analizar
             // 
-            this.Analizar.Location = new System.Drawing.Point(348, 109);
+            this.Analizar.BackColor = System.Drawing.Color.LightGreen;
+            this.Analizar.Location = new System.Drawing.Point(643, 97);
             this.Analizar.Name = "Analizar";
             this.Analizar.Size = new System.Drawing.Size(310, 116);
             this.Analizar.TabIndex = 2;
             this.Analizar.Text = "ANALIZAR";
-            this.Analizar.UseVisualStyleBackColor = true;
+            this.Analizar.UseVisualStyleBackColor = false;
             this.Analizar.Click += new System.EventHandler(this.button2_Click);
             // 
             // lista
             // 
-            this.lista.Location = new System.Drawing.Point(12, 244);
+            this.lista.Location = new System.Drawing.Point(49, 244);
             this.lista.Name = "lista";
             this.lista.Size = new System.Drawing.Size(945, 460);
             this.lista.TabIndex = 3;
             this.lista.UseCompatibleStateImageBehavior = false;
             // 
-            // button2
+            // progressBar1
             // 
-            this.button2.Location = new System.Drawing.Point(673, 109);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(310, 116);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "QUITAR";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(883, 26);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.progressBar1.Location = new System.Drawing.Point(467, 206);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 23);
+            this.progressBar1.TabIndex = 4;
+            this.progressBar1.StyleChanged += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ClientSize = new System.Drawing.Size(1038, 716);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lista);
             this.Controls.Add(this.Analizar);
             this.Controls.Add(this.button1);
@@ -117,8 +108,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button Analizar;
         private System.Windows.Forms.ListView lista;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

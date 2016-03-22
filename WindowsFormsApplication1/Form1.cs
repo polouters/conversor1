@@ -21,64 +21,12 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int counter = 0;
-            string line;
-            ArrayList lineas = new ArrayList();
-            string archivo = Files.Text;
-            
+            /* Al pulsar el boton procesar, recojemos los datos del ListView y con ellos 
+            creamos una tabla en access en un fichero dado por el usuario o uno nuevo. 
+            */
+            string texto = string.Join(";", lista.Items.Cast<ListViewItem>().Select(a => a.Text).ToArray());
 
-            // Read the file and display it line by line.
-           
-            System.IO.StreamReader file = new System.IO.StreamReader(archivo);
-            
-            while ((line = file.ReadLine()) != null)
-            {
-                lineas.Add(line);
-              //  MessageBox.Show(line);
-                counter++;
-            }
-            file.Close();
-         //   MessageBox.Show("Cabecera: "+lineas[0].ToString());
-          
-            int ncol;
-            string[] bar1 = lineas[0].ToString().Split('\t');
-            ncol = lineas[0].ToString().Split('\t').Length;
-
-            string texto;
-            using (StreamReader sr = new StreamReader(archivo))
-            {
-                // Read the stream to a string, and write the string to the console.
-                texto = sr.ReadToEnd();
-           //    MessageBox.Show(texto);
-            }
-
-
-            MessageBox.Show(ncol.ToString());
-            string[] bar = texto.Split('\t');
-            
-            int i = 0;
-            int x = 0;
-            string nuevaL="";
-            while(x <bar.Length){
-            i++;
-            nuevaL += bar[x]+" ";
-                if (i == ncol)
-                {
-                    i = 0;
-                    MessageBox.Show(nuevaL);
-                    MessageBox.Show("Linea terminada");
-                    nuevaL = "";
-                }
-
-                
-                x++;
- 
-            }
-            MessageBox.Show(nuevaL);
-            MessageBox.Show("Linea terminada");
-
-            
-
+            MessageBox.Show(texto);
 
         }
 
@@ -125,7 +73,7 @@ namespace WindowsFormsApplication1
             int camposprocesados = 0;
             int concatenar = 0;
             ArrayList registro = new ArrayList();
-            string campoAtu = "";
+           
             while ((line = file.ReadLine()) != null)
             {
                 if (camposprocesados>0 && camposprocesados < ncampos)
@@ -190,14 +138,8 @@ namespace WindowsFormsApplication1
             file.Close();
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            lista.Items.RemoveAt(Int32.Parse(textBox1.Text));
-        }
+        
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }
