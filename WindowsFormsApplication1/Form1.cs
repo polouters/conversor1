@@ -25,6 +25,7 @@ namespace WindowsFormsApplication1
             string line;
             ArrayList lineas = new ArrayList();
             string archivo = Files.Text;
+            
 
             // Read the file and display it line by line.
            
@@ -95,74 +96,87 @@ namespace WindowsFormsApplication1
             // Variables globales dentro de la funcion
             string line;
             string archivo = Files.Text;
-            int contador=0;
             System.IO.StreamReader file = new System.IO.StreamReader(archivo);
             int ncampos = 0;
             // ArrayLists para llenar el ListView 
             ArrayList nombreC = new ArrayList();
             ArrayList longC = new ArrayList();
+           
 
-         //   string[,] lista_arr = new string[ncampos, 2];
+            //   string[,] lista_arr = new string[ncampos, 2];
+
+
+
+            // Cabecera
+            line = file.ReadLine();
+            string[] campos = line.ToString().Split('\t');
+            lista.Clear();
+            lista.Columns.Add("Nombre campo", 500);
+            lista.Columns.Add("Long. Max.", 100);
+            foreach (string campo in campos)
+            {
+                nombreC.Add(campo);
+                longC.Add(0);
+                ncampos++;
+            }
+            // Fin Cabecera
+
+            // Proceso filas de datos
+            int camposprocesados = 0;
+            int concatenar = 0;
+            ArrayList registro = new ArrayList();
+            string campoAtu = "";
             while ((line = file.ReadLine()) != null)
             {
-                
-                if (contador == 0)
+                if (camposprocesados>0 && camposprocesados < ncampos)
                 {
-                    // Cabecera
-                    string[] campos = line.ToString().Split('\t');
-                   
-                    lista.Clear();
-
-                    lista.Columns.Add("Nombre campo", 500);
-                    lista.Columns.Add("Long. Max.", 100);
-
-                    foreach (string campo in campos)
+                    concatenar = 1; //Esta línea es una continuación de la anterior
+                    camposprocesados--;
+                }
+                else concatenar = 0;
+                
+                campos = line.ToString().Split('\t');
+                foreach (string campo in campos)
+                {
+                    if (concatenar == 1)
                     {
-                        nombreC.Add(campo);
-                        longC.Add(0);
-                        ncampos++;
+                        registro[registro.Count-1] += "\n" + campo; 
+                        Console.WriteLine("Concatenar con la anterior");
+                        concatenar = 0;
                     }
-                
-                }
-                else
-                {
-                    // Fila de datos
-                    int camposprocesados = 0;
-                    string[] campos = line.ToString().Split('\t');
-                    do
+                    else
                     {
-                        // foreach (string campo in campos)
-                        int y;
-                        for (y = 0; camposprocesados < ncampos && y < campos.Length; y++)
-                        {
-                            string campo = campos[y].ToString();
-                            // AQUI VA TODA LA LOGICA DEL PROGRAMA
-                            int tamano = campo.Length;
-                            Console.WriteLine(tamano);
-                            Console.WriteLine(campo);
-                            Console.WriteLine(camposprocesados);
-
-                            if (tamano > (int)longC[camposprocesados])
-                            {
-                                longC[camposprocesados] = tamano;
-                                   
-                            }
-                          
-
-                            camposprocesados++;
-                        }
-                        line = file.ReadLine();
-                        if(line!=null)
-                        campos = line.ToString().Split('\t');
-                        else
-                            break;
-
-                    } while (camposprocesados < ncampos);
-
+                        registro.Add(campo);
+                    }
+                    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
+                    camposprocesados++;
                 }
-                MessageBox.Show(line);
-                contador++;
+               Console.WriteLine(camposprocesados + "/" + ncampos);
+                
+                if (camposprocesados == ncampos) {
+                    //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
+                    int z = 0;
+                    foreach ( string campo in registro)
+                    {
+                        if(campo.Length > longC[z].ToString().Length)
+                        {
+                            longC[z] = campo.Length;
+                        }
+                        z++;
+                    }
+                    registro = new ArrayList(); // formateamos el ArrayList
+                    camposprocesados = 0; // La siguiente línea es un registro nuevo
+                } 
+              //  MessageBox.Show(line);
+              
             }
+
+
+
+
+
+
+
             ListViewItem itm;
             for (int i = 0; i < ncampos; i++)
             {
