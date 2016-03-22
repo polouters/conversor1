@@ -24,9 +24,16 @@ namespace WindowsFormsApplication1
             /* Al pulsar el boton procesar, recojemos los datos del ListView y con ellos 
             creamos una tabla en access en un fichero dado por el usuario o uno nuevo. 
             */
-            string texto = string.Join(";", lista.Items.Cast<ListViewItem>().Select(a => a.Text).ToArray());
+           //Asi saco cualquier valor del List View  
+            // prueba con for
+            for (int i = 0; i < lista.Items.Count; i++)
+            {
+             MessageBox.Show(lista.Items[i].SubItems[0].Text+ " tiene un tamaño de " +lista.Items[i].SubItems[1].Text);
+            }
+            //fin del for
 
-            MessageBox.Show(texto);
+
+
 
         }
 
