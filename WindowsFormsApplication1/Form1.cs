@@ -131,21 +131,32 @@ namespace WindowsFormsApplication1
                     string[] campos = line.ToString().Split('\t');
                     do
                     {
-                        foreach (string campo in campos)
+                        // foreach (string campo in campos)
+                        int y;
+                        for (y = 0; camposprocesados < ncampos && y < campos.Length; y++)
                         {
+                            string campo = campos[y].ToString();
                             // AQUI VA TODA LA LOGICA DEL PROGRAMA
                             int tamano = campo.Length;
-                            if (tamano > (int)longC[camposprocesados + 1])
+                            Console.WriteLine(tamano);
+                            Console.WriteLine(campo);
+                            Console.WriteLine(camposprocesados);
+
+                            if (tamano > (int)longC[camposprocesados])
                             {
-                                longC[camposprocesados + 1] = tamano;
+                                longC[camposprocesados] = tamano;
                                    
                             }
-                            //if(tamano>)
+                          
 
                             camposprocesados++;
                         }
                         line = file.ReadLine();
-                      //  campos = line.ToString().Split('\t');
+                        if(line!=null)
+                        campos = line.ToString().Split('\t');
+                        else
+                            break;
+
                     } while (camposprocesados < ncampos);
 
                 }
