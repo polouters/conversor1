@@ -49,7 +49,8 @@ namespace WindowsFormsApplication1
                 
                 if (i == 0)
                 {
-                    cmmd.CommandText += "[" + myString + "] Text Primary Key,";
+                    //[id_default]  NUMBER NOT NULL PRIMARY KEY,
+                    cmmd.CommandText += "" + "[" + myString + "] Text,";
                 }
                 else
                 {if(i == lista.Items.Count - 1)
@@ -70,8 +71,12 @@ namespace WindowsFormsApplication1
             {
                 try
                 {
+                    //ejecutamos query de creacion de tabla
                     cmmd.ExecuteNonQuery();
                     MessageBox.Show("Add!");
+                    // ejecutamos query de insert
+                    ejecutar_inserts(tableName,conn);
+               
                     conn.Close();
                 }
                 catch (OleDbException expe)
@@ -85,6 +90,95 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Error!");
             }
 
+
+        }
+        public void ejecutar_inserts(string tableName,OleDbConnection conn)
+        {
+            //variables
+            string archivo = Files.Text;
+            System.IO.StreamReader file = new System.IO.StreamReader(archivo);
+            string line;
+            int ncampos = 0;
+
+            //nos saltamos la cabecera pero nos quedamos  con el ncampos
+            line = file.ReadLine();
+            string[] campos = line.ToString().Split('\t');
+            foreach (string campo in campos)
+            {
+             
+                ncampos++;
+            }
+            // ahora seguimos con el resto de lineas y vamos haciendo las inserts
+
+            //procesado de datos
+            int camposprocesados = 0;
+            int concatenar = 0;
+            ArrayList registro = new ArrayList();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                if (camposprocesados > 0 && camposprocesados < ncampos)
+                {
+                    concatenar = 1; //Esta línea es una continuación de la anterior
+                    camposprocesados--;
+                }
+                else concatenar = 0;
+
+                campos = line.ToString().Split('\t');
+                foreach (string campo in campos)
+                {
+                    if (concatenar == 1)
+                    {
+                        registro[registro.Count - 1] += "\n" + campo;
+                        //      Console.WriteLine("Concatenar con la anterior");
+                        concatenar = 0;
+                    }
+                    else
+                    {
+                        registro.Add(campo);
+                    }
+                    //    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
+                    camposprocesados++;
+                }
+                // Console.WriteLine(camposprocesados + "/" + ncampos);
+
+                if (camposprocesados == ncampos)
+                {
+                    //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
+                    int z = 0;
+                    //'null',
+                    string inserta = "INSERT INTO "+ tableName + " VALUES (";
+                    foreach (string campo in registro)
+                    {
+                        //vamos preparando la insert
+                        inserta += "'" + campo.Replace("'",",") + "'";
+                        if (z == registro.Count - 1)
+                        {
+                            inserta += ")";
+                        }
+                        else
+                        {
+                            inserta += ",";
+                        }
+                        z++;
+                    }
+                    OleDbCommand cmd = new OleDbCommand(inserta, conn);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Registro guardado");
+                    registro = new ArrayList(); // formateamos el ArrayList
+                    camposprocesados = 0; // La siguiente línea es un registro nuevo
+                }
+                //  MessageBox.Show(line);
+
+            }
+
+
+
+
+
+            //repetitiva
+          //  string insertar = "INSERT INTO BD VALUES ('" + txtfolio.Text + "','" + txtnombre.Text + "','" + txtapellido.Text + "','" + txtaño.Text + "','" + txtcalle.Text + "','" + txtmes.Text + "','" + txtsuma.Text + "')";
+           
 
         }
 
