@@ -44,9 +44,10 @@ namespace WindowsFormsApplication1
             {
                 //camabiamos codificacion del texto para quitar posibles errores al llegar en ASCI
                 string myString = lista.Items[i].SubItems[0].Text.Replace(".", "_");
-                byte[] bytes = Encoding.Default.GetBytes(myString);
+                byte[] bytes = Encoding.Default.GetBytes(myString);                
+                byte[] bytes2    =  Encoding.Convert(Encoding.ASCII, Encoding.UTF8, bytes);
                 myString = Encoding.UTF8.GetString(bytes);
-                
+
                 if (i == 0)
                 {
                     //[id_default]  NUMBER NOT NULL PRIMARY KEY,
@@ -129,7 +130,7 @@ namespace WindowsFormsApplication1
                 {
                     if (concatenar == 1)
                     {
-                        registro[registro.Count - 1] += "\n" + campo;
+                        registro[registro.Count - 1] += "\r\n" + campo;
                         //      Console.WriteLine("Concatenar con la anterior");
                         concatenar = 0;
                     }
@@ -151,7 +152,7 @@ namespace WindowsFormsApplication1
                     foreach (string campo in registro)
                     {
                         //vamos preparando la insert
-                        inserta += "'" + campo.Replace("'",",") + "'";
+                        inserta += "\"" + campo.Replace("'","''") + "\"";
                         if (z == registro.Count - 1)
                         {
                             inserta += ")";
@@ -162,9 +163,12 @@ namespace WindowsFormsApplication1
                         }
                         z++;
                     }
+             //       MessageBox.Show(inserta);
+                    //inserta.Replace("########", "\\n\\r");
+                    //MessageBox.Show(inserta);
                     OleDbCommand cmd = new OleDbCommand(inserta, conn);
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Registro guardado");
+                //    MessageBox.Show("Registro guardado");
                     registro = new ArrayList(); // formateamos el ArrayList
                     camposprocesados = 0; // La siguiente línea es un registro nuevo
                 }
@@ -174,11 +178,11 @@ namespace WindowsFormsApplication1
 
 
 
-
+            MessageBox.Show("Registros guardados");
 
             //repetitiva
-          //  string insertar = "INSERT INTO BD VALUES ('" + txtfolio.Text + "','" + txtnombre.Text + "','" + txtapellido.Text + "','" + txtaño.Text + "','" + txtcalle.Text + "','" + txtmes.Text + "','" + txtsuma.Text + "')";
-           
+            //  string insertar = "INSERT INTO BD VALUES ('" + txtfolio.Text + "','" + txtnombre.Text + "','" + txtapellido.Text + "','" + txtaño.Text + "','" + txtcalle.Text + "','" + txtmes.Text + "','" + txtsuma.Text + "')";
+
 
         }
 
@@ -240,8 +244,8 @@ namespace WindowsFormsApplication1
                 {
                     if (concatenar == 1)
                     {
-                        registro[registro.Count-1] += "\n" + campo; 
-                  //      Console.WriteLine("Concatenar con la anterior");
+                        registro[registro.Count-1] += "\n\r" + campo; 
+                        //MessageBox.Show("Concatenar con la anterior");
                         concatenar = 0;
                     }
                     else
