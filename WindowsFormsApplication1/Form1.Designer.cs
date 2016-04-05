@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.Files = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.procesar = new System.Windows.Forms.Button();
             this.Analizar = new System.Windows.Forms.Button();
             this.lista = new System.Windows.Forms.ListView();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -51,9 +51,11 @@
             this.label10 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.button6 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.insertatxt = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,16 +67,16 @@
             this.Files.TabIndex = 0;
             this.Files.TextChanged += new System.EventHandler(this.File_TextChanged);
             // 
-            // button1
+            // procesar
             // 
-            this.button1.BackColor = System.Drawing.Color.RosyBrown;
-            this.button1.Location = new System.Drawing.Point(92, 178);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(310, 116);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "PROCESAR";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.procesar.BackColor = System.Drawing.Color.RosyBrown;
+            this.procesar.Location = new System.Drawing.Point(92, 178);
+            this.procesar.Name = "procesar";
+            this.procesar.Size = new System.Drawing.Size(310, 116);
+            this.procesar.TabIndex = 1;
+            this.procesar.Text = "PROCESAR";
+            this.procesar.UseVisualStyleBackColor = false;
+            this.procesar.Click += new System.EventHandler(this.button1_Click);
             // 
             // Analizar
             // 
@@ -91,7 +93,7 @@
             // 
             this.lista.Location = new System.Drawing.Point(47, 309);
             this.lista.Name = "lista";
-            this.lista.Size = new System.Drawing.Size(945, 460);
+            this.lista.Size = new System.Drawing.Size(945, 332);
             this.lista.TabIndex = 3;
             this.lista.UseCompatibleStateImageBehavior = false;
             // 
@@ -283,16 +285,6 @@
             this.panel1.Size = new System.Drawing.Size(905, 59);
             this.panel1.TabIndex = 22;
             // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(837, 784);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(131, 23);
-            this.button5.TabIndex = 23;
-            this.button5.Text = "Copiar selección";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(681, 29);
@@ -303,12 +295,42 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(837, 784);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(131, 23);
+            this.button5.TabIndex = 23;
+            this.button5.Text = "Copiar selección";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(6, 795);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(112, 15);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "PolProcessToAcc";
+            // 
+            // insertatxt
+            // 
+            this.insertatxt.Location = new System.Drawing.Point(47, 661);
+            this.insertatxt.Multiline = true;
+            this.insertatxt.Name = "insertatxt";
+            this.insertatxt.Size = new System.Drawing.Size(945, 117);
+            this.insertatxt.TabIndex = 25;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ClientSize = new System.Drawing.Size(1041, 819);
+            this.Controls.Add(this.insertatxt);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -324,7 +346,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.lista);
             this.Controls.Add(this.Analizar);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.procesar);
             this.Controls.Add(this.Files);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -339,7 +361,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox Files;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button procesar;
         private System.Windows.Forms.Button Analizar;
         private System.Windows.Forms.ListView lista;
         private System.Windows.Forms.TextBox textBox1;
@@ -364,6 +386,8 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox insertatxt;
     }
 }
 

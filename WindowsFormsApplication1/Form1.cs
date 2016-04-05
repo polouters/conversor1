@@ -24,9 +24,10 @@ namespace WindowsFormsApplication1
         {
             InitializeComponent();
         }
-
+        /* Procesar */
         private void button1_Click(object sender, EventArgs e)
         {
+            /* Procesar */
 
 
             try
@@ -36,10 +37,10 @@ namespace WindowsFormsApplication1
                     */
                 //Asi saco cualquier valor del List View  
                 // prueba con for
-                for (int i = 0; i < lista.Items.Count; i++)
-                {
+             //   for (int i = 0; i < lista.Items.Count; i++)
+               // {
                     // MessageBox.Show(lista.Items[i].SubItems[0].Text+ " tiene un tamaño de " +lista.Items[i].SubItems[1].Text);
-                }
+                //}
                 //fin del for
 
                 OleDbConnection conn = new OleDbConnection();
@@ -53,24 +54,52 @@ namespace WindowsFormsApplication1
                 {
                     //camabiamos codificacion del texto para quitar posibles errores al llegar en ASCI
                     string myString = lista.Items[i].SubItems[0].Text.Replace(".", "_");
-                    byte[] bytes = Encoding.Default.GetBytes(myString);
-                    byte[] bytes2 = Encoding.Convert(Encoding.ASCII, Encoding.UTF8, bytes);
-                    myString = Encoding.UTF8.GetString(bytes);
-
+                    string longitu = lista.Items[i].SubItems[1].Text;
+                    int longuitu = Int32.Parse(longitu);
+                    Console.Write(longuitu);
                     if (i == 0)
                     {
                         //[id_default]  NUMBER NOT NULL PRIMARY KEY,
-                        cmmd.CommandText += "" + "[" + myString + "] Text,";
+                        if (longuitu < 150)
+                        {
+                            Console.Write("/<150");
+                            cmmd.CommandText += "" + "[" + myString + "] Text,";
+                        }else if(longuitu > 150)
+                        {
+                            Console.Write("/>150");
+                            cmmd.CommandText += "" + "[" + myString + "] Text,";
+                        }
+                      
                     }
                     else
                     {
                         if (i == lista.Items.Count - 1)
                         {
-                            cmmd.CommandText += "[" + myString + "] Text)";
+                            if (longuitu < 150)
+                            {
+                                Console.Write("/<150");
+                                cmmd.CommandText +=  "[" + myString + "] Text)";
+                            }
+                            else if (longuitu > 150)
+                            {
+                                Console.Write("/>150");
+                                cmmd.CommandText +=  "[" + myString + "] Text)";
+                            }
+                           
                         }
                         else
                         {
-                            cmmd.CommandText += "[" + myString + "] Text,";
+                            if (longuitu < 150)
+                            {
+                                Console.Write("/<150");
+                                cmmd.CommandText +=  "[" + myString + "] Text,";
+                            }
+                            else if (longuitu > 150)
+                            {
+                                Console.Write("/>150");
+                                cmmd.CommandText +=  "[" + myString + "] Text,";
+                            }
+                           
                         }
 
                     }
@@ -103,7 +132,7 @@ namespace WindowsFormsApplication1
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo va mal");
+                MessageBox.Show("Algo va mal"+ ex);
                 
             }
 
@@ -111,108 +140,115 @@ namespace WindowsFormsApplication1
         }
         public void ejecutar_inserts(string tableName,OleDbConnection conn)
         {
-            //variables
-            
-           
+            try
+            {
+                //variables
+
+
                 string archivo = Files.Text;
-                System.IO.StreamReader file = new System.IO.StreamReader(archivo);
+                System.IO.StreamReader file = new System.IO.StreamReader(archivo, Encoding.GetEncoding(1252));
                 string line;
                 int ncampos = 0;
-            
 
 
-            //nos saltamos la cabecera pero nos quedamos  con el ncampos
-            line = file.ReadLine();
-            string[] campos = line.ToString().Split('\t');
-            foreach (string campo in campos)
-            {
-             
-                ncampos++;
-            }
-            // ahora seguimos con el resto de lineas y vamos haciendo las inserts
 
-            //procesado de datos
-            int camposprocesados = 0;
-            int concatenar = 0;
-            ArrayList registro = new ArrayList();
+                //nos saltamos la cabecera pero nos quedamos  con el ncampos
+                line = file.ReadLine().Replace("'", "\'").Replace('"', '\"');
+                string[] campos = line.ToString().Split('\t');
 
-            while ((line = file.ReadLine()) != null)
-            {
-                if (camposprocesados > 0 && camposprocesados < ncampos)
+                ncampos = campos.Length;
+
+                // ahora seguimos con el resto de lineas y vamos haciendo las inserts
+
+                //procesado de datos
+                int camposprocesados = 0;
+                int concatenar = 0;
+                ArrayList registro = new ArrayList();
+
+                while ((line = file.ReadLine()) != null)
                 {
-                    concatenar = 1; //Esta línea es una continuación de la anterior
-                    camposprocesados--;
-                }
-                else concatenar = 0;
-
-                campos = line.ToString().Split('\t');
-                foreach (string campo in campos)
-                {
-                    if (concatenar == 1)
+                    line = line.Replace(@"""", @"""""");
+                    if (camposprocesados > 0 && camposprocesados < ncampos)
                     {
-                        registro[registro.Count - 1] += "\r\n" + campo;
-                        //      Console.WriteLine("Concatenar con la anterior");
-                        concatenar = 0;
+                        concatenar = 1; //Esta línea es una continuación de la anterior
+                        camposprocesados--;
                     }
-                    else
-                    {
-                        registro.Add(campo);
-                    }
-                    //    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
-                    camposprocesados++;
-                }
-                // Console.WriteLine(camposprocesados + "/" + ncampos);
+                    else concatenar = 0;
 
-                if (camposprocesados == ncampos)
-                {
-                    //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
-                    int z = 0;
-                    //'null',
-                    string inserta = "INSERT INTO "+ tableName + " VALUES (";
-                    foreach (string campo in registro)
+                    campos = line.ToString().Split('\t');
+                    foreach (string campo in campos)
                     {
-                        //vamos preparando la insert
-                        inserta += "\"" + campo.Replace("'","''") + "\"";
-                        if (z == registro.Count - 1)
+                        if (concatenar == 1)
                         {
-                            inserta += ")";
+                            registro[registro.Count - 1] += "\r\n" + campo;
+                            //      Console.WriteLine("Concatenar con la anterior");
+                            concatenar = 0;
                         }
                         else
                         {
-                            inserta += ",";
+                            registro.Add(campo);
                         }
-                        z++;
+                        //    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
+                        camposprocesados++;
                     }
-             //       MessageBox.Show(inserta);
-                    //inserta.Replace("########", "\\n\\r");
-                    //MessageBox.Show(inserta);
-                    OleDbCommand cmd = new OleDbCommand(inserta, conn);
-                    cmd.ExecuteNonQuery();
-                //    MessageBox.Show("Registro guardado");
-                    registro = new ArrayList(); // formateamos el ArrayList
-                    camposprocesados = 0; // La siguiente línea es un registro nuevo
+                    // Console.WriteLine(camposprocesados + "/" + ncampos);
+
+                    if (camposprocesados == ncampos)
+                    {
+                        //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
+                        int z = 0;
+                        //'null',
+                        string inserta = "INSERT INTO " + tableName + " VALUES (";
+                        foreach (string campo in registro)
+                        {
+                            //vamos preparando la insert
+                            inserta += @"""" + campo + @"""";
+                            if (z == registro.Count - 1)
+                            {
+                                inserta += ")";
+                            }
+                            else
+                            {
+                                inserta += ",";
+                            }
+                            z++;
+                        }
+                        //       MessageBox.Show(inserta);
+                        //inserta.Replace("########", "\\n\\r");
+                        //MessageBox.Show(inserta);
+                        OleDbCommand cmd = new OleDbCommand(inserta, conn);
+                        insertatxt.Text = inserta;
+                        cmd.ExecuteNonQuery();
+                        //    MessageBox.Show("Registro guardado");
+                        registro = new ArrayList(); // formateamos el ArrayList
+                        camposprocesados = 0; // La siguiente línea es un registro nuevo
+                    }
+                    //  MessageBox.Show(line);
+
                 }
-                //  MessageBox.Show(line);
+
+
+
+                MessageBox.Show("Registros guardados");
+
+                //repetitiva
+                //  string insertar = "INSERT INTO BD VALUES ('" + txtfolio.Text + "','" + txtnombre.Text + "','" + txtapellido.Text + "','" + txtaño.Text + "','" + txtcalle.Text + "','" + txtmes.Text + "','" + txtsuma.Text + "')";
 
             }
-
-
-
-            MessageBox.Show("Registros guardados");
-
-            //repetitiva
-            //  string insertar = "INSERT INTO BD VALUES ('" + txtfolio.Text + "','" + txtnombre.Text + "','" + txtapellido.Text + "','" + txtaño.Text + "','" + txtcalle.Text + "','" + txtmes.Text + "','" + txtsuma.Text + "')";
-
+            catch (Exception ex1)
+            {
+                MessageBox.Show(""+ ex1);
+            }
 
         }
-
         private void File_TextChanged(object sender, EventArgs e)
         {
 
         }
-
+        /* Analizar */
         private void button2_Click(object sender, EventArgs e) 
         {
+            /* Analizar */
             try
             {
                 // Esenciales ListView
@@ -222,17 +258,12 @@ namespace WindowsFormsApplication1
                 // Variables globales dentro de la funcion
                 string line;
                 string archivo = Files.Text;
-                System.IO.StreamReader file = new System.IO.StreamReader(archivo);
+                System.IO.StreamReader file = new System.IO.StreamReader(archivo, Encoding.GetEncoding(1252));
                 int ncampos = 0;
                 // ArrayLists para llenar el ListView 
                 ArrayList nombreC = new ArrayList();
                 ArrayList longC = new ArrayList();
-
-
-                //   string[,] lista_arr = new string[ncampos, 2];
-
-
-
+                ArrayList regLogS = new ArrayList();
                 // Cabecera
                 line = file.ReadLine();
                 string[] campos = line.ToString().Split('\t');
@@ -251,7 +282,8 @@ namespace WindowsFormsApplication1
                 int camposprocesados = 0;
                 int concatenar = 0;
                 ArrayList registro = new ArrayList();
-
+                ArrayList rlog = new ArrayList();
+         
                 while ((line = file.ReadLine()) != null)
                 {
                     if (camposprocesados > 0 && camposprocesados < ncampos)
@@ -266,13 +298,13 @@ namespace WindowsFormsApplication1
                     {
                         if (concatenar == 1)
                         {
-                            registro[registro.Count - 1] += "\n\r" + campo;
+                            registro[registro.Count - 1] += "\n\r" + campo.Replace("'", "\'").Replace('"', '\"');
                             //MessageBox.Show("Concatenar con la anterior");
                             concatenar = 0;
                         }
                         else
                         {
-                            registro.Add(campo);
+                            registro.Add(campo.Replace("'", "\'").Replace('"', '\"'));
                         }
                         //    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
                         camposprocesados++;
@@ -283,8 +315,10 @@ namespace WindowsFormsApplication1
                     {
                         //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
                         int z = 0;
+                        ArrayList logr = new ArrayList();
                         foreach (string campo in registro)
                         {
+                            logr.Add(campo.Length);
                             if (campo.Length > longC[z].ToString().Length)
                             {
                                 longC[z] = campo.Length;
@@ -293,24 +327,48 @@ namespace WindowsFormsApplication1
                         }
                         registro = new ArrayList(); // formateamos el ArrayList
                         camposprocesados = 0; // La siguiente línea es un registro nuevo
+                        regLogS.Add(logr);
                     }
                     //  MessageBox.Show(line);
 
                 }
 
+        
 
 
-
-
+                // inserccion al listview
 
 
                 ListViewItem itm;
+                   
                 for (int i = 0; i < ncampos; i++)
                 {
-                    string[] fila = new string[2];
+                    string[] fila = new string[3+ regLogS.Count];
+                    Boolean igh = true;
+                    int cont = 1;
+                    for (int z = 0; z <=i; z++)
+                    {
+                        if(nombreC[i].ToString() == nombreC[z].ToString() && i != z)
+                        {
+                            cont++;
+                            igh = false;
+                        }
+                        
+                    }
+                    if(igh == true)
+                    {
+                        fila[0] = nombreC[i].ToString();
+                    }
+                    else
+                    {
+                        fila[0] = nombreC[i].ToString() + cont;
+                    }
+                       
 
-                    fila[0] = nombreC[i].ToString();
+
                     fila[1] = longC[i].ToString();
+                
+                
                     itm = new ListViewItem(fila);
                     lista.Items.Add(itm);
                 }
@@ -319,37 +377,27 @@ namespace WindowsFormsApplication1
             catch (Exception ex)
             {
 
-                MessageBox.Show("Algo va mal");
+                MessageBox.Show("Algo va mal "+ ex);
             }
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            
-        }
-
+        }      
         private void label1_Click(object sender, EventArgs e)
         {
 
         }
-
         private void button2_Click_2(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 Files.Text = openFileDialog1.FileName;
         }
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 textBox1.Text = openFileDialog1.FileName;
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             try
@@ -367,29 +415,24 @@ namespace WindowsFormsApplication1
                 cat = null;
             }catch(Exception ex)
             {
-                MessageBox.Show("Se ha producido un error");
+                MessageBox.Show("Se ha producido un error" + ex);
             }
            
 
 
         }
-
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
         }
-
         private void label9_Click(object sender, EventArgs e)
         {
 
         }
-
         private void label10_Click(object sender, EventArgs e)
         {
 
-        }
-       
-
+        }     
         private void button5_Click(object sender, EventArgs e)
         {
             Clipboard.Clear();
@@ -404,7 +447,6 @@ namespace WindowsFormsApplication1
                 }
             Clipboard.SetText(tex1t);
             }
-
         private void button6_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
