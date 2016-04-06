@@ -60,13 +60,11 @@ namespace WindowsFormsApplication1
                     if (i == 0)
                     {
                         //[id_default]  NUMBER NOT NULL PRIMARY KEY,
-                        if (longuitu < 150)
+                        if (longuitu < 50)
                         {
-                            Console.Write("/<150");
                             cmmd.CommandText += "" + "[" + myString + "] Text,";
-                        }else if(longuitu > 150)
+                        }else if(longuitu > 50)
                         {
-                            Console.Write("/>150");
                             cmmd.CommandText += "" + "[" + myString + "] Text,";
                         }
                       
@@ -75,28 +73,27 @@ namespace WindowsFormsApplication1
                     {
                         if (i == lista.Items.Count - 1)
                         {
-                            if (longuitu < 150)
+                            if (longuitu < 50)
                             {
-                                Console.Write("/<150");
+                               
                                 cmmd.CommandText +=  "[" + myString + "] Text)";
                             }
-                            else if (longuitu > 150)
+                            else if (longuitu > 50)
                             {
-                                Console.Write("/>150");
+                              
                                 cmmd.CommandText +=  "[" + myString + "] Text)";
                             }
                            
                         }
                         else
                         {
-                            if (longuitu < 150)
+                            if (longuitu < 50)
                             {
-                                Console.Write("/<150");
                                 cmmd.CommandText +=  "[" + myString + "] Text,";
                             }
-                            else if (longuitu > 150)
+                            else if (longuitu > 50)
                             {
-                                Console.Write("/>150");
+                                
                                 cmmd.CommandText +=  "[" + myString + "] Text,";
                             }
                            
@@ -147,93 +144,89 @@ namespace WindowsFormsApplication1
 
                 string archivo = Files.Text;
                 System.IO.StreamReader file = new System.IO.StreamReader(archivo, Encoding.GetEncoding(1252));
-                string line;
+                
                 int ncampos = 0;
 
-
-
-                //nos saltamos la cabecera pero nos quedamos  con el ncampos
-                line = file.ReadLine().Replace("'", "\'").Replace('"', '\"');
-                string[] campos = line.ToString().Split('\t');
-
-                ncampos = campos.Length;
-
-                // ahora seguimos con el resto de lineas y vamos haciendo las inserts
-
-                //procesado de datos
+                string[] lines = file.ReadToEnd().Split('\n');
+                int contador1 = 0;
                 int camposprocesados = 0;
-                int concatenar = 0;
                 ArrayList registro = new ArrayList();
-
-                while ((line = file.ReadLine()) != null)
+                foreach (string line in lines)
                 {
-                    line = line.Replace(@"""", @"""""");
-                    if (camposprocesados > 0 && camposprocesados < ncampos)
-                    {
-                        concatenar = 1; //Esta línea es una continuación de la anterior
-                        camposprocesados--;
+                    if (contador1 == 0)
+                    {// si es la primera vez que entramos cojemos la cabecera y guardamos el numero de campos
+                        string[] campos = line.ToString().Replace("'", "\'").Replace('"', '\"').Split('\t');
+                        ncampos = campos.Length;
+                        contador1++;
                     }
-                    else concatenar = 0;
-
-                    campos = line.ToString().Split('\t');
-                    foreach (string campo in campos)
-                    {
-                        if (concatenar == 1)
+                    else
+                    { // ahora seguimos con el resto de lineas y vamos haciendo las inserts
+                       
+                        int concatenar = 0;
+                       
+                        //procesado de datos
+                        string line1 = line.Replace(@"""", @"""""");
+                        if (camposprocesados > 0 && camposprocesados < ncampos)
                         {
-                            registro[registro.Count - 1] += "\r\n" + campo;
-                            //      Console.WriteLine("Concatenar con la anterior");
-                            concatenar = 0;
+                            concatenar = 1; //Esta línea es una continuación de la anterior
+                            camposprocesados--;
                         }
-                        else
-                        {
-                            registro.Add(campo);
-                        }
-                        //    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
-                        camposprocesados++;
-                    }
-                    // Console.WriteLine(camposprocesados + "/" + ncampos);
+                        else concatenar = 0;
 
-                    if (camposprocesados == ncampos)
-                    {
-                        //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
-                        int z = 0;
-                        //'null',
-                        string inserta = "INSERT INTO " + tableName + " VALUES (";
-                        foreach (string campo in registro)
+                        string [] campos = line1.ToString().Split('\t');
+                        foreach (string campo in campos)
                         {
-                            //vamos preparando la insert
-                            inserta += @"""" + campo + @"""";
-                            if (z == registro.Count - 1)
+                            if (concatenar == 1)
                             {
-                                inserta += ")";
+                                registro[registro.Count - 1] += "\r\n" + campo;
+                                //      Console.WriteLine("Concatenar con la anterior");
+                                concatenar = 0;
                             }
                             else
                             {
-                                inserta += ",";
+                                registro.Add(campo);
                             }
-                            z++;
+                            //    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
+                            camposprocesados++;
                         }
-                        //       MessageBox.Show(inserta);
-                        //inserta.Replace("########", "\\n\\r");
-                        //MessageBox.Show(inserta);
-                        OleDbCommand cmd = new OleDbCommand(inserta, conn);
-                        insertatxt.Text = inserta;
-                        cmd.ExecuteNonQuery();
-                        //    MessageBox.Show("Registro guardado");
-                        registro = new ArrayList(); // formateamos el ArrayList
-                        camposprocesados = 0; // La siguiente línea es un registro nuevo
+                        // Console.WriteLine(camposprocesados + "/" + ncampos);
+
+                        if (camposprocesados == ncampos)
+                        {
+                            //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
+                            int z = 0;
+                            //'null',
+                            string inserta = "INSERT INTO " + tableName + " VALUES (";
+                            foreach (string campo in registro)
+                            {
+                                //vamos preparando la insert
+                                inserta += @"""" + campo + @"""";
+                                if (z == registro.Count - 1)
+                                {
+                                    inserta += ")";
+                                }
+                                else
+                                {
+                                    inserta += ",";
+                                }
+                                z++;
+                            }
+  
+                            OleDbCommand cmd = new OleDbCommand(inserta, conn);
+                            insertatxt.Text = inserta;
+                            cmd.ExecuteNonQuery();//registro terminado
+                            registro = new ArrayList(); // formateamos el ArrayList
+                            camposprocesados = 0; // La siguiente línea es un registro nuevo
+                        }
+
+
+
                     }
-                    //  MessageBox.Show(line);
+
 
                 }
 
-
-
                 MessageBox.Show("Registros guardados");
-
-                //repetitiva
-                //  string insertar = "INSERT INTO BD VALUES ('" + txtfolio.Text + "','" + txtnombre.Text + "','" + txtapellido.Text + "','" + txtaño.Text + "','" + txtcalle.Text + "','" + txtmes.Text + "','" + txtsuma.Text + "')";
-
             }
             catch (Exception ex1)
             {
@@ -315,10 +308,10 @@ namespace WindowsFormsApplication1
                     {
                         //Antes del siguiente registro hacemos una repetitiva para revisar el tema del Tamaño
                         int z = 0;
-                        ArrayList logr = new ArrayList();
+                      
                         foreach (string campo in registro)
                         {
-                            logr.Add(campo.Length);
+                          
                             if (campo.Length > longC[z].ToString().Length)
                             {
                                 longC[z] = campo.Length;
@@ -327,7 +320,7 @@ namespace WindowsFormsApplication1
                         }
                         registro = new ArrayList(); // formateamos el ArrayList
                         camposprocesados = 0; // La siguiente línea es un registro nuevo
-                        regLogS.Add(logr);
+                     
                     }
                     //  MessageBox.Show(line);
 
@@ -454,5 +447,6 @@ namespace WindowsFormsApplication1
                 textBox4.Text = folderBrowserDialog1.SelectedPath;
             }
         }
+
     }
 }
