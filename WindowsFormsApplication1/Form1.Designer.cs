@@ -53,7 +53,7 @@
             // 
             this.lista.Location = new System.Drawing.Point(45, 232);
             this.lista.Name = "lista";
-            this.lista.Size = new System.Drawing.Size(945, 332);
+            this.lista.Size = new System.Drawing.Size(827, 332);
             this.lista.TabIndex = 3;
             this.lista.UseCompatibleStateImageBehavior = false;
             // 

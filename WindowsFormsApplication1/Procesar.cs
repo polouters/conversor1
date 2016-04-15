@@ -47,6 +47,7 @@ namespace WindowsFormsApplication1
                     Console.Write(longuitu);
                     if (i == 0)
                     {
+                    
 
                         cmmd.CommandText += "" + "[" + myString + "] Text,";
                     }
@@ -54,11 +55,11 @@ namespace WindowsFormsApplication1
                     {
                         if (i == nombreC.Length - 1)
                         {
-                            cmmd.CommandText += "[" + myString + "] Text)";
+                           cmmd.CommandText += "[" + myString + "] Text)";
                         }
                         else
                         {
-                            cmmd.CommandText += "[" + myString + "] Text,";
+                                cmmd.CommandText += "[" + myString + "] Text,";   
                         }
 
                     }
