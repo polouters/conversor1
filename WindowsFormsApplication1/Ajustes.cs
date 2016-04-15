@@ -34,7 +34,7 @@ namespace WindowsFormsApplication1
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = openFileDialog1.FileName;
-                Program.archivo_acs = Files.Text;
+                Program.archivo_acs = textBox1.Text;
             }
                 
         }

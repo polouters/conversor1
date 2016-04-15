@@ -37,14 +37,14 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1176, 864);
+            this.tabControl1.Size = new System.Drawing.Size(1097, 864);
             this.tabControl1.TabIndex = 0;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1176, 864);
+            this.ClientSize = new System.Drawing.Size(1097, 864);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form2";
             this.Text = "PolProccessToAcc";

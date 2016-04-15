@@ -73,7 +73,7 @@
             this.groupBox3.Controls.Add(this.button6);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Location = new System.Drawing.Point(79, 484);
+            this.groupBox3.Location = new System.Drawing.Point(44, 484);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(1021, 188);
             this.groupBox3.TabIndex = 2;
@@ -87,7 +87,7 @@
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.textBox1);
-            this.groupBox2.Location = new System.Drawing.Point(79, 263);
+            this.groupBox2.Location = new System.Drawing.Point(44, 264);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1021, 188);
             this.groupBox2.TabIndex = 1;
@@ -99,7 +99,7 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.Files);
-            this.groupBox1.Location = new System.Drawing.Point(79, 33);
+            this.groupBox1.Location = new System.Drawing.Point(44, 34);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1021, 212);
             this.groupBox1.TabIndex = 0;

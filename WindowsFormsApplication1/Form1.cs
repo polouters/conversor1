@@ -20,14 +20,14 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : MyTabPage.MyFormPage
     {
-        public static ArrayList nombreC;
+        
+        public static string[] nombreC;
         public Form1()
         {
             InitializeComponent();
             this.pn1 = panel1;
         }
-       
- 
+
         /* Analizar */
         private void button2_Click(object sender, EventArgs e) 
         {
@@ -41,6 +41,7 @@ namespace WindowsFormsApplication1
                 //nos saltamos la cabecera pero nos quedamos  con el ncampos
                 line = file.ReadLine().Replace("'", "\'").Replace('"', '\"');
                 string[] campos = line.ToString().Split('\t');
+                nombreC = campos;
                 ncampos = campos.Length;
                 int[] longC = new int[ncampos];
                 // ahora seguimos con el resto de lineas y vamos haciendo las inserts
@@ -66,7 +67,6 @@ namespace WindowsFormsApplication1
                         int z = 0;
                         foreach (string campo in registro)
                         {
-                            //vamos preparando la insert
                             if (longC[z] < campo.Length)
                             {
                                 longC[z] = campo.Length;
@@ -112,11 +112,11 @@ namespace WindowsFormsApplication1
                 }
                 if (igh == true)
                 {
-                    fila[0] = nombreC[i].ToString();
+                    fila[0] = nombreC[i];
                 }
                 else
                 {
-                    fila[0] = nombreC[i].ToString() + cont;
+                    fila[0] = nombreC[i] + cont;
                 }
 
 

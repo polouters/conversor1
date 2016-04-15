@@ -25,7 +25,7 @@ namespace WindowsFormsApplication1
         {
             /* Procesar */
 
-            ArrayList nombreC = Program.campoL;
+            string [] nombreC = Program.campoL;
             int[] longL = Program.longL;
             try
             {
@@ -38,7 +38,7 @@ namespace WindowsFormsApplication1
                 string tableName = "[" + Program.table_name.Replace(".", "_") + "]";
                 OleDbCommand cmmd = new OleDbCommand("", conn);
                 cmmd.CommandText = "CREATE TABLE " + tableName + "(";
-                for (int i = 0; i < nombreC.Count; i++)
+                for (int i = 0; i < nombreC.Length; i++)
                 {
                     //camabiamos codificacion del texto para quitar posibles errores al llegar en ASCI
                     string myString = nombreC[i].ToString().Replace(".", "_");
@@ -52,7 +52,7 @@ namespace WindowsFormsApplication1
                     }
                     else
                     {
-                        if (i == nombreC.Count - 1)
+                        if (i == nombreC.Length - 1)
                         {
                             cmmd.CommandText += "[" + myString + "] Text)";
                         }

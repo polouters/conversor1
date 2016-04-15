@@ -9,10 +9,10 @@ namespace WindowsFormsApplication1
 {
     static class Program
     {
-        public static string archivo_txt;
-        public static string table_name;
-        public static string archivo_acs;
-        public static ArrayList campoL;
+        public static string archivo_txt = "";
+        public static string table_name = "";
+        public static string archivo_acs ="";
+        public static string [] campoL;
         public static int [] longL;
         /// <summary>
         /// Punto de entrada principal para la aplicación.
