@@ -124,7 +124,7 @@ namespace WindowsFormsApplication1
             ArrayList registro = new ArrayList();
             while ((line = file.ReadLine()) != null)
             {
-                line = line.Replace(@"""", @"""""");
+                
                 if (camposprocesados > 0 && camposprocesados < ncampos) { concatenar = 1; camposprocesados--; } else { concatenar = 0; }
                 campos = line.ToString().Split('\t');
                 foreach (string campo in campos)
@@ -232,46 +232,59 @@ namespace WindowsFormsApplication1
         }
         public ArrayList segundoLlenado(ArrayList resultado)
         {
-            ArrayList nResult = new ArrayList();
-            ArrayList idN = new ArrayList();
-            int y = 0;
-            foreach(string reg in resultado)
+            if (resultado.Count == 0)
             {
-                Char[] c = cs1Tb1.Text.ToCharArray();
-                string[] campos = reg.Split(c);
-                for(int x = 0; x < campos.Length; x++)
-                {
-                    nResult.Add(campos[x]);
-                    idN.Add(id[y]);
-
-                }
-                y++;
+                return resultado;
             }
-            id = idN;
-            return nResult;
+            else
+            {
+                ArrayList nResult = new ArrayList();
+                ArrayList idN = new ArrayList();
+                int y = 0;
+                foreach (string reg in resultado)
+                {
+                    Char[] c = cs1Tb1.Text.ToCharArray();
+                    string[] campos = reg.Split(c);
+                    for (int x = 0; x < campos.Length; x++)
+                    {
+                        nResult.Add(campos[x]);
+                        idN.Add(id[y]);
+
+                    }
+                    y++;
+                }
+                id = idN;
+                return nResult;
+            }
+            
         }
         public ArrayList tercerLlenado(ArrayList resultado)
-        {
-            ArrayList nResult = new ArrayList();
-            int y = 0;
-            foreach (string reg in resultado)
+        {if (resultado.Count == 0)
             {
-                Char[] c = cs2Tb1.Text.ToCharArray();
-                string[] campos = reg.Split(c);
-                if(rbSi.Checked == true)
-                {
-                    nResult.Add(campos[0].Replace(tbq1.Text,""));
-                }
-                else
-                {
-                    nResult.Add(campos[0]);
-                }
-               
-                    
-                
-                y++;
+                return resultado;
             }
-            return nResult;
+            else {
+                ArrayList nResult = new ArrayList();
+                int y = 0;
+                foreach (string reg in resultado)
+                {
+                    Char[] c = cs2Tb1.Text.ToCharArray();
+                    string[] campos = reg.Split(c);
+                    if (rbSi.Checked == true)
+                    {
+                        nResult.Add(campos[0].Replace(tbq1.Text, ""));
+                    }
+                    else
+                    {
+                        nResult.Add(campos[0]);
+                    }
+
+
+
+                    y++;
+                }
+                return nResult;
+            }
         }
         public void swich(ArrayList col1, ArrayList col2)
         {
@@ -308,7 +321,7 @@ namespace WindowsFormsApplication1
                 OleDbCommand cmmd = new OleDbCommand("", conn);
                 cmmd.CommandText = "CREATE TABLE " + tableName + "(";
                 cmmd.CommandText += "" + "[" + ccTb1.Text.Replace(".", "_") + "] Text,";
-                cmmd.CommandText += "[" + cTb2.Text.Replace(".", "_") + "] Text)";
+                cmmd.CommandText += "[" + ccTb2.Text.Replace(".", "_") + "] Text)";
                 if (conn.State == ConnectionState.Open)
                 {
                     try
@@ -356,6 +369,7 @@ namespace WindowsFormsApplication1
                     inserta += ",";
                     inserta += @"""" + campo + @"""";
                     inserta += ")";
+                    textBox3.Text = inserta;
                     OleDbCommand cmd = new OleDbCommand(inserta, conn);
                     cmd.ExecuteNonQuery();
                     z++;
@@ -406,8 +420,42 @@ namespace WindowsFormsApplication1
 
             //ahora separamos la clave del campo
             resultado = tercerLlenado(resultado);
+            ArrayList resultada = new ArrayList();
+            if(campo == "3.3.1 Autres références")
+            {
+                foreach(string res in resultado)
+                {
+                    //string res1 = res.Substring(0, 1);
 
-            rTb1 = resultado;
+                     if(res.Length<2 || res.IndexOf(" ")==-1) { resultada.Add(res); } else
+                    {
+                        int posBlan = res.IndexOf(" ");
+                        int pos1 = posBlan + 3;
+                        int posBar = res.IndexOf("/");
+                        int pos2 = posBar + 1;
+                        int pos3 = res.Length;
+                        string Type = res.Substring(0, posBlan);
+                        string number;
+                        string anne;
+                        if (posBar != -1)
+                        {
+                             number = res.Substring(pos1, posBar - pos1);
+                             anne = res.Substring(pos2, pos3 - pos2);
+                        }
+                        else
+                        {
+                            number = "";
+                             anne = "";
+                        }
+                       
+                        resultada.Add(Type + number + anne);
+                    }
+                   
+                }
+            }
+            else { resultada = resultado; }
+
+            rTb1 = resultada;
             MessageBox.Show("terminado");
         }
         public int[]  otrocamino(string campoC)
@@ -469,6 +517,23 @@ namespace WindowsFormsApplication1
 
             //ahora separamos la clave del campo
             resultado = tercerLlenado2(resultado);
+            ArrayList resultada = new ArrayList();
+            if (campo == "3.3.1 Autres références")
+            {
+                foreach (string res in resultado)
+                {
+                    int posBlan = res.IndexOf(" ");
+                    int pos1 = posBlan + 3;
+                    int posBar = res.IndexOf("/");
+                    int pos2 = posBar + 1;
+                    int pos3 = res.Length;
+                    string Type = res.Substring(0, posBlan);
+                    string number = res.Substring(pos1, posBar - pos1);
+                    string anne = res.Substring(pos2, pos3 - pos2);
+                    resultada.Add(Type + number + anne);
+                }
+            }
+            else { resultada = resultado; }
 
             rTb2 = resultado;
             MessageBox.Show("terminado");
@@ -602,46 +667,57 @@ namespace WindowsFormsApplication1
             return nResult;
         }
         public ArrayList segundoLlenado2(ArrayList resultado)
-        {
-            ArrayList nResult = new ArrayList();
-            ArrayList idN = new ArrayList();
-            int y = 0;
-            foreach (string reg in resultado)
+        {if (resultado.Count == 0)
             {
-                Char[] c = cs1Tb2.Text.ToCharArray();
-                string[] campos = reg.Split(c);
-                for (int x = 0; x < campos.Length; x++)
-                {
-                    nResult.Add(campos[x]);
-                    idN.Add(id2[y]);
-
-                }
-                y++;
+                return resultado;
             }
-            id2 = idN;
-            return nResult;
+            else {
+                ArrayList nResult = new ArrayList();
+                ArrayList idN = new ArrayList();
+                int y = 0;
+                foreach (string reg in resultado)
+                {
+                    Char[] c = cs1Tb2.Text.ToCharArray();
+                    string[] campos = reg.Split(c);
+                    for (int x = 0; x < campos.Length; x++)
+                    {
+                        nResult.Add(campos[x]);
+                        idN.Add(id2[y]);
+
+                    }
+                    y++;
+                }
+                id2 = idN;
+                return nResult;
+            }
         }
         public ArrayList tercerLlenado2(ArrayList resultado)
         {
-            ArrayList nResult = new ArrayList();
-            int y = 0;
-            foreach (string reg in resultado)
+            if (resultado.Count == 0)
             {
-                Char[] c = cs2Tb2.Text.ToCharArray();
-                string[] campos = reg.Split(c);
-
-                if (rbSi.Checked == true)
-                {
-                    nResult.Add(campos[0].Replace(tbq2.Text, ""));
-                }
-                else
-                {
-                    nResult.Add(campos[0]);
-                }
-
-                y++;
+                return resultado;
             }
-            return nResult;
+            else {
+                ArrayList nResult = new ArrayList();
+                int y = 0;
+                foreach (string reg in resultado)
+                {
+                    Char[] c = cs2Tb2.Text.ToCharArray();
+                    string[] campos = reg.Split(c);
+
+                    if (rbSi.Checked == true)
+                    {
+                        nResult.Add(campos[0].Replace(tbq2.Text, ""));
+                    }
+                    else
+                    {
+                        nResult.Add(campos[0]);
+                    }
+
+                    y++;
+                }
+                return nResult;
+            }
         }
     }
 }

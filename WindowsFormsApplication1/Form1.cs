@@ -95,12 +95,12 @@ namespace WindowsFormsApplication1
             // inserccion al listview
 
             ListViewItem itm;
-
+            int cont = 1;
             for (int i = 0; i < ncampos; i++)
             {
                 string[] fila = new string[2];
                 Boolean igh = true;
-                int cont = 1;
+               
                 for (int z = 0; z <= i; z++)
                 {
                     if (nombreC[i].ToString() == nombreC[z].ToString() && i != z)
@@ -117,6 +117,7 @@ namespace WindowsFormsApplication1
                 else
                 {
                     fila[0] = nombreC[i] + cont;
+                    nombreC[i] += cont;
                 }
 
 
