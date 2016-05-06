@@ -33,7 +33,6 @@ namespace WindowsFormsApplication1
             bool ck4 = checkBox4.Checked;
             ArrayList col1 = new ArrayList();
             ArrayList col2 = new ArrayList();
-            if (ck1 == true && ck4 == true)
             {
                 int x = 0;
                 foreach (string campo1 in rTb1)
@@ -42,7 +41,8 @@ namespace WindowsFormsApplication1
                     {
                         if(campo1 == clave2)
                         {
-                            col1.Add(id[x].ToString());
+
+                            col1.Add(id[x]);
                             col2.Add(clave2);  
                         }
                     }
@@ -247,7 +247,7 @@ namespace WindowsFormsApplication1
                     string[] campos = reg.Split(c);
                     for (int x = 0; x < campos.Length; x++)
                     {
-                        nResult.Add(campos[x]);
+                        nResult.Add(campos[x].Replace(" ", ""));
                         idN.Add(id[y]);
 
                     }
@@ -427,10 +427,10 @@ namespace WindowsFormsApplication1
                 {
                     //string res1 = res.Substring(0, 1);
 
-                     if(res.Length<2 || res.IndexOf(" ")==-1) { resultada.Add(res); } else
+                     if(res.Length<5) { resultada.Add(res); } else
                     {
-                        int posBlan = res.IndexOf(" ");
-                        int pos1 = posBlan + 3;
+                        int posBlan = res.IndexOf("n");
+                        int pos1 = posBlan + 2;
                         int posBar = res.IndexOf("/");
                         int pos2 = posBar + 1;
                         int pos3 = res.Length;
@@ -448,7 +448,7 @@ namespace WindowsFormsApplication1
                              anne = "";
                         }
                        
-                        resultada.Add(Type + number + anne);
+                        resultada.Add((Type + number + anne).Replace(" ",""));
                     }
                    
                 }
@@ -681,7 +681,7 @@ namespace WindowsFormsApplication1
                     string[] campos = reg.Split(c);
                     for (int x = 0; x < campos.Length; x++)
                     {
-                        nResult.Add(campos[x]);
+                        nResult.Add(campos[x].Replace(" ", ""));
                         idN.Add(id2[y]);
 
                     }
@@ -707,7 +707,7 @@ namespace WindowsFormsApplication1
 
                     if (rbSi.Checked == true)
                     {
-                        nResult.Add(campos[0].Replace(tbq2.Text, ""));
+                        nResult.Add(campos[0].Replace(tbq2.Text, "").Replace(" ", ""));
                     }
                     else
                     {

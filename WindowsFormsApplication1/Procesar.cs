@@ -113,7 +113,11 @@ namespace WindowsFormsApplication1
                 ArrayList registro = new ArrayList();
                 foreach (string line in lines)
                 {
-                    if (contador1 == 0)
+                    if (camposprocesados > ncampos)
+                    {
+                        MessageBox.Show("Error, el numero de campos ha sido superdado" + line + "  / " + camposprocesados);
+                    }
+                        if (contador1 == 0)
                     {// si es la primera vez que entramos cojemos la cabecera y guardamos el numero de campos
                         string[] campos = line.ToString().Replace("'", "\'").Replace('"', '\"').Split('\t');
                         ncampos = campos.Length;
@@ -147,7 +151,20 @@ namespace WindowsFormsApplication1
                                 registro.Add(campo);
                             }
                             //    Console.WriteLine(camposprocesados.ToString() + " - " + campo);
-                            camposprocesados++;
+                            if (camposprocesados > ncampos)
+                            {
+                                MessageBox.Show("Error, el numero de campos ha sido superdado" + line + "  / " + camposprocesados);
+                            }
+                            if(camposprocesados == ncampos)
+                            {
+
+                            }
+                            else
+                            {
+                                camposprocesados++;
+                            }
+                            
+                            
                         }
                         // Console.WriteLine(camposprocesados + "/" + ncampos);
 

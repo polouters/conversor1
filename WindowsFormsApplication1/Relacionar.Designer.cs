@@ -64,6 +64,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -71,6 +72,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.checkBox4);
             this.panel1.Controls.Add(this.checkBox3);
@@ -433,6 +435,16 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(945, 12);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(112, 15);
+            this.label13.TabIndex = 40;
+            this.label13.Text = "PolProcessToAcc";
+            // 
             // Relacionar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -489,5 +501,6 @@
         private System.Windows.Forms.TextBox tbq1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.RadioButton rbNo;
+        private System.Windows.Forms.Label label13;
     }
 }
