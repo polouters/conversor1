@@ -238,6 +238,7 @@ namespace WindowsFormsApplication1
             }
             else
             {
+                
                 ArrayList nResult = new ArrayList();
                 ArrayList idN = new ArrayList();
                 int y = 0;
@@ -258,6 +259,7 @@ namespace WindowsFormsApplication1
             }
             
         }
+
         public ArrayList tercerLlenado(ArrayList resultado)
         {if (resultado.Count == 0)
             {

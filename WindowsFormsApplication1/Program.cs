@@ -26,5 +26,11 @@ namespace WindowsFormsApplication1
             v2.añadir_pestañas();
             Application.Run(v2);
         }
+        /* static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new prueba());
+        } */
     }
 }

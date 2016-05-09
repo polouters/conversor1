@@ -19,3 +19,4 @@ C:\Users\alberto\Documents\Visual Studio 2012\Projects\WindowsFormsApplication1\
 C:\Users\alberto\Documents\Visual Studio 2012\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Ajustes.resources
 C:\Users\alberto\Documents\Visual Studio 2012\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Procesar.resources
 C:\Users\alberto\Documents\Visual Studio 2012\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Relacionar.resources
+C:\Users\alberto\Documents\Visual Studio 2012\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.prueba.resources
