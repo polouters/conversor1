@@ -21,9 +21,10 @@ namespace WindowsFormsApplication1
         {
             tabControl1.TabPages.Add(new MyTabPage(new Form1()));
             tabControl1.TabPages.Add(new MyTabPage(new Procesar()));
+            tabControl1.TabPages.Add(new MyTabPage(new prueba()));
             tabControl1.TabPages.Add(new MyTabPage(new Relacionar()));
             tabControl1.TabPages.Add(new MyTabPage(new Ajustes()));
-            tabControl1.TabPages.Add(new MyTabPage(new prueba()));
+            
 
         }
     }

@@ -88,7 +88,7 @@ namespace WindowsFormsApplication1
         }
         public ArrayList segundoLlenado(ArrayList resultado)
         {
-            string pattern = @"[a-z]\/";
+            string pattern = @""+tbRegex.Text+"";
             if (resultado.Count == 0)
             {
                 return resultado;
@@ -120,12 +120,12 @@ namespace WindowsFormsApplication1
         }
         private void button3_Clic()
         {
-            bool normal = true;
+            
             string[] nombreC = Program.campoL;
             int posCampo = 0;
             int posCampoC = 0;
-            string campo = "3.2.4 Cote du versement";
-            string campoC = "Clé dossier";
+            string campo = tbCDividr.Text;
+            string campoC = tbCClave.Text;
             int[] pos = new int[4];
            
             for (posCampo = 0; posCampo < nombreC.Length && nombreC[posCampo] != campo; posCampo++) { }
@@ -182,8 +182,8 @@ namespace WindowsFormsApplication1
                 string tableName = "[" + Program.table_name.Replace(".", "_") + "]";
                 OleDbCommand cmmd = new OleDbCommand("", conn);
                 cmmd.CommandText = "CREATE TABLE " + tableName + "(";
-                cmmd.CommandText += "" + "[Cle_dossier] Text,";
-                cmmd.CommandText += "[3_2_4_Cote_du_versement] Text)";
+                cmmd.CommandText += "" + "["+tbCClave.Text+"] Text,";
+                cmmd.CommandText += "["+tbCDividr.Text+"] Text)";
                 if (conn.State == ConnectionState.Open)
                 {
                     try
